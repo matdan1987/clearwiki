@@ -1,0 +1,22 @@
+# ClearWiki Root .htaccess - Sicherheit
+# Blockiere direkten Zugriff auf alle Dateien außer public/
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Leite alle Anfragen an public/ weiter
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Blockiere Zugriff auf sensible Dateien und Verzeichnisse
+<FilesMatch "^(config\.php|functions\.php|\.git.*|\.env|composer\.(json|lock))">
+    Require all denied
+</FilesMatch>
+
+# Blockiere Zugriff auf Verzeichnisse
+Options -Indexes
+
+# Verhindere Verzeichnis-Browsing
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
