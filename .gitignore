@@ -1,0 +1,85 @@
+# ClearWiki .gitignore
+
+# Configuration files with sensitive data
+config.php
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Upload directories
+public/uploads/images/*
+!public/uploads/images/.gitkeep
+
+# Logs
+*.log
+error_log
+php_error.log
+access.log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+*.code-workspace
+
+# Backup files
+*.bak
+*.backup
+*.sql.backup
+backup_*
+
+# Composer (if used in future)
+vendor/
+composer.lock
+
+# Node modules (if frontend build tools are added)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Build directories
+dist/
+build/
+
+# Cache directories
+cache/
+*.cache
+
+# Session files (should not be in git)
+sessions/
+tmp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# PHPStorm
+.idea/
+
+# Debug files (should be removed from production)
+debug_session.php
+
+# Test files
+tests/
+phpunit.xml
+.phpunit.result.cache

@@ -50,11 +50,21 @@ EXIT;
 
 # Schema importieren
 mysql -u clearwiki -p clearwiki < schema.sql
+
+# Zusätzliche Übersetzungen importieren (wichtig!)
+mysql -u clearwiki -p clearwiki < additional_translations.sql
 ```
 
 ### 3. Konfiguration anpassen
 
-Bearbeiten Sie `config.php` und passen Sie die Datenbank-Zugangsdaten an:
+Kopieren Sie `config.example.php` zu `config.php` und passen Sie die Datenbank-Zugangsdaten an:
+
+```bash
+cp config.example.php config.php
+nano config.php  # oder ein anderer Editor
+```
+
+Ändern Sie folgende Werte in `config.php`:
 
 ```php
 define('DB_HOST', 'localhost');
