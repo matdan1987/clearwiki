@@ -7,27 +7,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// NEU: AGGRESSIVER SESSION-RESET FÜR DEBUGGING-ZWECKE!
-// DIESEN BLOCK NACH DER DIAGNOSE UNBEDINGT WIEDER ENTFERNEN!
-if (isset($_SESSION['user_id'])) { // Nur zerstören, wenn überhaupt eine User-ID gesetzt ist
-    session_unset();   // Alle Session-Variablen entfernen
-    session_destroy(); // Session zerstören
-    session_start();   // Eine neue, leere Session starten
-    error_log("DEBUG: Aggressive session reset performed. User was likely logged in.");
-} else {
-    error_log("DEBUG: No user_id in session. Session is clean.");
-}
-// ENDE AGGRESSIVER SESSION-RESET FÜR DEBUGGING-ZWECKE
-
-
-// DEBUGGING START: Zeigt den Zustand der Session bei jedem Request
-error_log("DEBUG SESSION (index.php init): " . print_r($_SESSION, true));
-// DEBUGGING END
-
-// Fehlerreporting für die Entwicklung
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Fehlerreporting für die Produktion
+// Fehler werden geloggt, aber nicht angezeigt
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+ini_set('log_errors', 1);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 
 // Die zentrale functions.php laden, die alle weiteren Helfer und die DB-Verbindung enthält
 require_once __DIR__ . '/../functions.php';

@@ -1,0 +1,46 @@
+# ClearWiki .htaccess - URL Rewriting
+# Aktiviert das Rewrite-Modul
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Setze den Basis-Pfad (falls die Anwendung in einem Unterverzeichnis liegt)
+    # RewriteBase /
+
+    # Wenn die angeforderte Datei oder das Verzeichnis existiert, nicht umleiten
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Alle anderen Anfragen an index.php weiterleiten
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Sicherheitseinstellungen
+<IfModule mod_headers.c>
+    # Verhindere Clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # XSS-Schutz
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Content-Type-Sniffing verhindern
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# PHP-Einstellungen
+<IfModule mod_php.c>
+    # Maximale Upload-Größe
+    php_value upload_max_filesize 5M
+    php_value post_max_size 6M
+
+    # Session-Einstellungen
+    php_value session.cookie_httponly 1
+    php_value session.use_strict_mode 1
+</IfModule>
+
+# Blockiere Zugriff auf sensible Dateien
+<FilesMatch "^(config\.php|functions\.php|\.git.*|\.env)">
+    Require all denied
+</FilesMatch>
