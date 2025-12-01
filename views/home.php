@@ -23,13 +23,46 @@ global $_SETTINGS, $current_lang, $is_demo_context;
         </div>
 
         <div class="grid lg:grid-cols-4 gap-8 main-grid mt-8">
-            <!-- Main Content Area - Hier werden später dynamische Inhalte wie "Neueste Artikel", "Beliebte Kategorien" oder "Personalisierte Empfehlungen" geladen -->
+            <!-- Main Content Area -->
             <div class="lg:col-span-3 space-y-8">
-                <section class="glass-effect rounded-2xl p-6">
-                    <h2 class="text-2xl font-bold text-white mb-4"><?= __('dynamic_content_placeholder_title') ?></h2>
-                    <p class="text-text-secondary"><?= __('dynamic_content_placeholder_text') ?></p>
-                    <!-- Hier werden in Zukunft die echten, dynamischen Inhalte angezeigt -->
-                </section>
+                <?php if (is_feature_enabled('enable_articles')): ?>
+                    <section class="glass-effect rounded-2xl p-6">
+                        <h2 class="text-2xl font-bold text-white mb-4">
+                            <i class="fas fa-book-open text-orange-500 mr-2"></i><?= __('getting_started_title') ?>
+                        </h2>
+                        <div class="text-text-secondary space-y-4">
+                            <p><?= __('getting_started_intro') ?></p>
+                            <div class="grid md:grid-cols-2 gap-4 mt-6">
+                                <div class="bg-gray-800 bg-opacity-50 p-4 rounded-lg">
+                                    <h3 class="text-white font-semibold mb-2">
+                                        <i class="fas fa-search text-blue-400 mr-2"></i><?= __('explore_content_title') ?>
+                                    </h3>
+                                    <p class="text-sm text-text-secondary mb-3"><?= __('explore_content_text') ?></p>
+                                    <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/wiki-index" class="text-orange-500 hover:text-orange-400 text-sm">
+                                        <?= __('browse_wiki') ?> →
+                                    </a>
+                                </div>
+                                <?php if (is_feature_enabled('enable_registration') || is_logged_in()): ?>
+                                    <div class="bg-gray-800 bg-opacity-50 p-4 rounded-lg">
+                                        <h3 class="text-white font-semibold mb-2">
+                                            <i class="fas fa-pen text-green-400 mr-2"></i><?= __('contribute_title') ?>
+                                        </h3>
+                                        <p class="text-sm text-text-secondary mb-3"><?= __('contribute_text') ?></p>
+                                        <?php if (is_logged_in()): ?>
+                                            <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/article/create" class="text-orange-500 hover:text-orange-400 text-sm">
+                                                <?= __('create_first_article') ?> →
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/register" class="text-orange-500 hover:text-orange-400 text-sm">
+                                                <?= __('register_to_contribute') ?> →
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </section>
+                <?php endif; ?>
             </div>
             <!-- Sidebar -->
             <?php load_view('sidebar', ['current_lang' => $current_lang, 'is_demo_context' => $is_demo_context ?? false]); ?>

@@ -365,10 +365,6 @@ $is_demo_context = $is_demo_context ?? false; // Sicherstellen, dass die Variabl
                             <i class="fas fa-list mr-2"></i><?= __('wiki_index_link') ?>
                         </a>
                     <?php endif; ?>
-                    <a href="#" class="text-gray-300 hover:text-orange-500 transition-colors relative">
-                        <i class="fas fa-bell mr-2"></i><?= __('updates_link') ?>
-                        <span class="notification-dot"></span>
-                    </a>
                     <?php if (is_feature_enabled('enable_articles') && is_logged_in()): ?>
                         <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?><?= $is_demo_context ? '/demo' : '' ?>/article/create" class="btn btn-primary">
                             <i class="fas fa-plus mr-2"></i><?= __('create_article_link') ?>
@@ -381,7 +377,7 @@ $is_demo_context = $is_demo_context ?? false; // Sicherstellen, dass die Variabl
                                 <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?><?= $is_demo_context ? '/demo' : '' ?>/register" class="btn btn-primary"><?= __('register_link') ?></a>
                             <?php endif; ?>
                         <?php else: ?>
-                            <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/logout" class="btn btn-secondary">Logout</a>
+                            <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/logout" class="btn btn-secondary"><?= __('logout') ?></a>
                             <?php if (is_admin()): ?>
                                 <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/admin/dashboard" class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center" title="<?= __('admin_dashboard_link') ?>">
                                     <i class="fas fa-user-shield text-white text-sm"></i>
@@ -447,7 +443,7 @@ $is_demo_context = $is_demo_context ?? false; // Sicherstellen, dass die Variabl
                         </a>
                     <?php endif; ?>
                     <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/logout" class="text-gray-300 hover:text-accent-orange text-lg">
-                        <i class="fas fa-sign-out-alt mr-3"></i>Logout
+                        <i class="fas fa-sign-out-alt mr-3"></i><?= __('logout') ?>
                     </a>
                 <?php endif; ?>
                 <?php if (is_feature_enabled('enable_impressum')): ?>

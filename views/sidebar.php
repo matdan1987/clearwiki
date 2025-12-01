@@ -5,36 +5,19 @@ global $current_lang;
 ?>
 <aside class="space-y-6">
     <!-- Quick Actions -->
-    <div class="sidebar-section">
-        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
-            <i class="fas fa-bolt text-orange-500 mr-2"></i>
-            <?= __('quick_actions_title') ?>
-        </h3>
-        <div class="space-y-3">
-            <?php if (is_logged_in() && is_feature_enabled('enable_articles')): ?>
+    <?php if (is_logged_in() && is_feature_enabled('enable_articles')): ?>
+        <div class="sidebar-section">
+            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                <i class="fas fa-bolt text-orange-500 mr-2"></i>
+                <?= __('quick_actions_title') ?>
+            </h3>
+            <div class="space-y-3">
                 <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/article/create" class="btn btn-primary w-full">
                     <i class="fas fa-plus mr-2"></i><?= __('create_article_link') ?>
                 </a>
-            <?php endif; ?>
-            <?php if (is_logged_in() && is_feature_enabled('enable_pending_contributions')): ?>
-                <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/my-contributions" class="btn btn-secondary w-full">
-                    <i class="fas fa-edit mr-2"></i><?= __('edit_drafts_link') ?>
-                </a>
-            <?php endif; ?>
+            </div>
         </div>
-    </div>
-
-    <!-- Recent Activity (Platzhalter für dynamische Daten) -->
-    <div class="sidebar-section">
-        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
-            <i class="fas fa-clock text-orange-500 mr-2"></i>
-            <?= __('recent_activity_title') ?>
-        </h3>
-        <div class="space-y-3">
-            <p class="text-text-secondary text-sm"><?= __('recent_activity_placeholder_sidebar') ?></p>
-            <!-- Hier werden später die neuesten Artikel oder Revisionen dynamisch geladen -->
-        </div>
-    </div>
+    <?php endif; ?>
 
     <!-- Admin Panel -->
     <?php if (is_admin()): ?>
@@ -73,16 +56,4 @@ global $current_lang;
             </div>
         </div>
     <?php endif; ?>
-
-    <!-- Community Stats (Platzhalter für dynamische Daten) -->
-    <div class="sidebar-section">
-        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
-            <i class="fas fa-users text-orange-500 mr-2"></i>
-            <?= __('community_title') ?>
-        </h3>
-        <div class="space-y-3">
-            <p class="text-text-secondary text-sm"><?= __('community_stats_placeholder_sidebar') ?></p>
-            <!-- Hier werden später die echten Community-Statistiken dynamisch geladen -->
-        </div>
-    </div>
 </aside>

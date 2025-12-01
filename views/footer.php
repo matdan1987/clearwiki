@@ -14,18 +14,7 @@ $footer_links = get_footer_links();
             <div class="grid md:grid-cols-4 gap-8">
                 <div>
                     <h4 class="font-semibold text-white mb-4"><?= sanitize_output($_SETTINGS['wiki_name'] ?? 'ClearWiki') ?></h4>
-                    <p class="text-gray-400 text-sm mb-4"><?= sanitize_output($_SETTINGS['wiki_slogan'] ?? __('default_footer_slogan')) ?></p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-orange-500">
-                            <i class="fab fa-discord"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
+                    <p class="text-gray-400 text-sm"><?= sanitize_output($_SETTINGS['wiki_slogan'] ?? __('default_footer_slogan')) ?></p>
                 </div>
                 <div>
                     <h4 class="font-semibold text-white mb-4"><?= __('footer_wiki_title') ?></h4>
@@ -60,19 +49,17 @@ $footer_links = get_footer_links();
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center">
                 <p class="text-gray-400 text-sm">
-                    <?= sanitize_output($_SETTINGS['footer_text'] ?? ('© ' . date('Y') . ' ClearWiki - Entwickelt mit ❤️ von Daniel Mattick.')) ?> 
-                    <span class="text-orange-500"><?= __('version_text', ['version' => '2.0']) ?></span>
+                    <?= sanitize_output($_SETTINGS['footer_text'] ?? ('© ' . date('Y') . ' ClearWiki - Entwickelt mit ❤️ von Daniel Mattick.')) ?>
                 </p>
-                <!-- Dynamische Systeminformationen (z.B. Ladezeit, Status) werden hier später angezeigt -->
             </div>
         </div>
     </footer>
 
     <!-- Floating Action Button -->
     <?php if (is_feature_enabled('enable_articles') && is_logged_in()): ?>
-        <button class="floating-action" title="<?= __('create_article_short') ?>">
+        <a href="/<?= htmlspecialchars($current_lang ?? DEFAULT_LANG) ?>/article/create" class="floating-action" title="<?= __('create_article_short') ?>">
             <i class="fas fa-plus text-xl"></i>
-        </button>
+        </a>
     <?php endif; ?>
 
     <!-- Toast Notifications Container -->
@@ -132,14 +119,6 @@ $footer_links = get_footer_links();
                 });
             });
 
-            // Floating Action Button
-            const fab = document.querySelector('.floating-action');
-            if (fab) {
-                fab.addEventListener('click', function() {
-                    showCreateArticleModal();
-                });
-            }
-
             // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -178,8 +157,7 @@ $footer_links = get_footer_links();
                         // Simulate loading
                         setTimeout(() => {
                             removeLoadingState(this);
-                            showToast('Aktion erfolgreich ausgeführt!', 'success');
-                        }, 1500);
+                            // Note: Loading state simulation removed - actual navigation is preferred
                     }
                 });
             });
@@ -208,14 +186,16 @@ $footer_links = get_footer_links();
                 // Ctrl/Cmd + N for new article
                 if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
                     e.preventDefault();
-                    showCreateArticleModal();
+                    const createLink = document.querySelector('a[href*="/article/create"]');
+                    if (createLink) {
+                        createLink.click();
+                    }
                 }
 
-                // Escape to close modals
+                // Escape to close mobile menu
                 if (e.key === 'Escape') {
-                    closeAllModals();
-                    // Also close mobile menu if open
-                    if (!mobileMenuOverlay.classList.contains('hidden')) {
+                    // Close mobile menu if open
+                    if (mobileMenuOverlay && !mobileMenuOverlay.classList.contains('hidden')) {
                         toggleMobileMenu();
                     }
                 }
@@ -322,97 +302,6 @@ $footer_links = get_footer_links();
                 toast.style.transform = 'translateX(full)';
                 setTimeout(() => toast.remove(), 300);
             }, duration);
-        }
-
-        // Show create article modal
-        function showCreateArticleModal() {
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
-            modal.innerHTML = `
-                <div class="bg-gray-900 rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold text-white">Neuen Artikel erstellen</h2>
-                        <button class="text-gray-400 hover:text-white" onclick="this.closest('.fixed').remove()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    
-                    <form class="space-y-6">
-                        <div>
-                            <label class="block text-gray-300 mb-2">Titel</label>
-                            <input type="text" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-orange-500 focus:outline-none" placeholder="Artikel-Titel eingeben...">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-gray-300 mb-2">Kategorie</label>
-                            <select class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-orange-500 focus:outline-none">
-                                <option>Helden</option>
-                                <option>Strategien</option>
-                                <option>Einheiten</option>
-                                <option>Events</option>
-                                <option>Allgemein</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-gray-300 mb-2">Tags</label>
-                            <input type="text" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-orange-500 focus:outline-none" placeholder="Tags durch Komma getrennt...">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-gray-300 mb-2">Kurzbeschreibung</label>
-                            <textarea class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-orange-500 focus:outline-none h-24" placeholder="Kurze Beschreibung des Artikels..."></textarea>
-                        </div>
-                        
-                        <div class="flex space-x-4">
-                            <button type="button" class="btn btn-primary flex-1" onclick="handleCreateArticle(this)">
-                                <i class="fas fa-save mr-2"></i>Artikel erstellen
-                            </button>
-                            <button type="button" class="btn btn-secondary" onclick="this.closest('.fixed').remove()">
-                                Abbrechen
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            // Focus first input
-            setTimeout(() => {
-                modal.querySelector('input').focus();
-            }, 100);
-        }
-
-        // Handle create article
-        function handleCreateArticle(button) {
-            addLoadingState(button);
-            
-            setTimeout(() => {
-                removeLoadingState(button);
-                button.closest('.fixed').remove();
-                showToast('Artikel erfolgreich erstellt!', 'success');
-            }, 2000);
-        }
-
-        // Add loading state to button
-        function addLoadingState(button) {
-            const originalContent = button.innerHTML;
-            button.dataset.originalContent = originalContent;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Laden...';
-            button.disabled = true;
-        }
-
-        // Remove loading state from button
-        function removeLoadingState(button) {
-            button.innerHTML = button.dataset.originalContent;
-            button.disabled = false;
-        }
-
-        // Close all modals
-        function closeAllModals() {
-            const modals = document.querySelectorAll('.fixed.inset-0');
-            modals.forEach(modal => modal.remove());
         }
 
         // Update stats (demo)

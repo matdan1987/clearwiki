@@ -268,7 +268,28 @@ INSERT IGNORE INTO language_strings (lang_key, lang_code, value, created_at, upd
 ('admin_alliances_link', 'en', 'Alliances', NOW(), NOW()),
 ('admin_send_alliance_mail_link', 'en', 'Send Bulk Mail', NOW(), NOW()),
 ('community_title', 'en', 'Community', NOW(), NOW()),
-('community_stats_placeholder_sidebar', 'en', 'Community statistics will be displayed here.', NOW(), NOW());
+('community_stats_placeholder_sidebar', 'en', 'Community statistics will be displayed here.', NOW(), NOW()),
+
+-- Home Page - Getting Started Section
+('getting_started_title', 'de', 'Erste Schritte', NOW(), NOW()),
+('getting_started_intro', 'de', 'Willkommen! Hier sind einige Möglichkeiten, wie Sie beginnen können:', NOW(), NOW()),
+('explore_content_title', 'de', 'Inhalte erkunden', NOW(), NOW()),
+('explore_content_text', 'de', 'Durchsuchen Sie das Wiki und entdecken Sie vorhandene Artikel und Guides.', NOW(), NOW()),
+('browse_wiki', 'de', 'Wiki durchsuchen', NOW(), NOW()),
+('contribute_title', 'de', 'Beitragen', NOW(), NOW()),
+('contribute_text', 'de', 'Teilen Sie Ihr Wissen und erstellen Sie neue Artikel für die Community.', NOW(), NOW()),
+('create_first_article', 'de', 'Ersten Artikel erstellen', NOW(), NOW()),
+('register_to_contribute', 'de', 'Registrieren um beizutragen', NOW(), NOW()),
+
+('getting_started_title', 'en', 'Getting Started', NOW(), NOW()),
+('getting_started_intro', 'en', 'Welcome! Here are some ways to get started:', NOW(), NOW()),
+('explore_content_title', 'en', 'Explore Content', NOW(), NOW()),
+('explore_content_text', 'en', 'Browse the wiki and discover existing articles and guides.', NOW(), NOW()),
+('browse_wiki', 'en', 'Browse Wiki', NOW(), NOW()),
+('contribute_title', 'en', 'Contribute', NOW(), NOW()),
+('contribute_text', 'en', 'Share your knowledge and create new articles for the community.', NOW(), NOW()),
+('create_first_article', 'en', 'Create First Article', NOW(), NOW()),
+('register_to_contribute', 'en', 'Register to Contribute', NOW(), NOW());
 
 -- =====================================================
 -- COMPLETED
