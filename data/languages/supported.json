@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "lang_code": "de",
+        "lang_name": "Deutsch",
+        "is_active": true
+    },
+    {
+        "id": 2,
+        "lang_code": "en",
+        "lang_name": "English",
+        "is_active": true
+    },
+    {
+        "id": 3,
+        "lang_code": "fr",
+        "lang_name": "Français",
+        "is_active": true
+    }
+]

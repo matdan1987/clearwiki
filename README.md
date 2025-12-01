@@ -1,9 +1,11 @@
 # ClearWiki - Next Generation Gaming Guide
 
-Ein modernes, mehrsprachiges Wiki-System für Gaming-Communities, entwickelt mit PHP und MySQL.
+Ein modernes, mehrsprachiges Wiki-System für Gaming-Communities, entwickelt mit PHP. **Keine Datenbank erforderlich!** Alle Daten werden in JSON-Dateien gespeichert.
 
 ## 🚀 Features
 
+- ✅ **Keine Datenbank nötig**: Läuft komplett dateibasiert mit JSON-Storage
+- ✅ **Einfache Installation**: Einfach hochladen und loslegen - keine komplizierte Einrichtung!
 - ✅ **Mehrsprachigkeit**: Vollständige Unterstützung für mehrere Sprachen (Deutsch, Englisch, Französisch)
 - ✅ **Artikel-Verwaltung**: Erstellen, bearbeiten und verwalten Sie Wiki-Artikel
 - ✅ **Benutzer-System**: Registrierung, Login, Rollen (Admin, Moderator, Registered)
@@ -17,16 +19,16 @@ Ein modernes, mehrsprachiges Wiki-System für Gaming-Communities, entwickelt mit
 ## 📋 Systemanforderungen
 
 - **PHP**: 8.0 oder höher
-- **MySQL**: 5.7 oder höher / MariaDB 10.3 oder höher
 - **Webserver**: Apache 2.4+ mit mod_rewrite
 - **PHP-Erweiterungen**:
-  - PDO
-  - pdo_mysql
+  - json
   - mbstring
   - session
   - gd (für Bild-Upload)
 
 ## 🛠️ Installation
+
+**Super einfach! Keine Datenbank-Einrichtung nötig.**
 
 ### 1. Projekt klonen oder herunterladen
 
@@ -35,52 +37,19 @@ git clone https://github.com/matdan1987/clearwiki.git
 cd clearwiki
 ```
 
-### 2. Datenbank erstellen
+### 2. Dateiberechtigungen setzen
 
 ```bash
-# MySQL-Konsole öffnen
-mysql -u root -p
-
-# Datenbank und Benutzer erstellen
-CREATE DATABASE clearwiki CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'clearwiki'@'localhost' IDENTIFIED BY 'IhrSicheresPasswort';
-GRANT ALL PRIVILEGES ON clearwiki.* TO 'clearwiki'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
-
-# Schema importieren
-mysql -u clearwiki -p clearwiki < schema.sql
-
-# Zusätzliche Übersetzungen importieren (wichtig!)
-mysql -u clearwiki -p clearwiki < additional_translations.sql
-```
-
-### 3. Konfiguration anpassen
-
-Kopieren Sie `config.example.php` zu `config.php` und passen Sie die Datenbank-Zugangsdaten an:
-
-```bash
-cp config.example.php config.php
-nano config.php  # oder ein anderer Editor
-```
-
-Ändern Sie folgende Werte in `config.php`:
-
-```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'clearwiki');
-define('DB_USER', 'clearwiki');
-define('DB_PASS', 'IhrSicheresPasswort');
-```
-
-### 4. Upload-Verzeichnis erstellen
-
-```bash
-mkdir -p public/uploads/images
+# Upload-Verzeichnis beschreibbar machen
 chmod 775 public/uploads/images
+
+# Data-Verzeichnis beschreibbar machen
+chmod -R 775 data/
 ```
 
-### 5. Apache-Konfiguration
+**Das war's!** Die Daten-Verzeichnisse und JSON-Dateien existieren bereits mit Standardwerten.
+
+### 3. Apache-Konfiguration
 
 Stellen Sie sicher, dass `mod_rewrite` aktiviert ist:
 
@@ -107,30 +76,25 @@ sudo systemctl restart apache2
 </VirtualHost>
 ```
 
-### 6. Standard-Admin-Zugang
+### 4. Standard-Admin-Zugang
 
 Nach der Installation können Sie sich mit folgenden Zugangsdaten anmelden:
 
 - **Benutzername**: `admin`
-- **Passwort**: `admin123`
+- **Passwort**: `password`
 
-**⚠️ WICHTIG**: Ändern Sie dieses Passwort sofort nach der ersten Anmeldung!
+**⚠️ WICHTIG**: Ändern Sie dieses Passwort sofort nach der ersten Anmeldung im Admin-Panel!
 
 ## 🔒 Sicherheit für Produktion
 
 ### Kritische Schritte vor dem Live-Gang:
 
 1. **Admin-Passwort ändern**:
-   ```bash
-   php generate_hash.php
-   # Neues Passwort-Hash generieren und in der Datenbank aktualisieren
-   ```
+   - Melden Sie sich als Admin an
+   - Gehen Sie zum Admin-Panel → Benutzerverwaltung
+   - Ändern Sie das Admin-Passwort
 
-2. **Datenbank-Passwort ändern**:
-   - Generieren Sie ein sicheres Passwort (mind. 20 Zeichen)
-   - Aktualisieren Sie `config.php`
-
-3. **Dateiberechtigungen setzen**:
+2. **Dateiberechtigungen setzen**:
    ```bash
    # Dateien: 644, Verzeichnisse: 755
    find . -type f -exec chmod 644 {} \;
@@ -139,51 +103,63 @@ Nach der Installation können Sie sich mit folgenden Zugangsdaten anmelden:
    # Upload-Verzeichnis beschreibbar
    chmod 775 public/uploads/images
 
+   # Data-Verzeichnis beschreibbar
+   chmod -R 775 data/
+
    # Sensible Dateien schützen
    chmod 600 config.php
    ```
 
-4. **Error Reporting**:
+3. **Error Reporting**:
    - Ist bereits für Produktion konfiguriert in `public/index.php`
    - Fehler werden geloggt, aber nicht angezeigt
 
-5. **HTTPS aktivieren**:
+4. **HTTPS aktivieren**:
    - Installieren Sie ein SSL-Zertifikat (z.B. Let's Encrypt)
    - Erzwingen Sie HTTPS in der Apache-Konfiguration
 
-6. **Regelmäßige Backups**:
+5. **Regelmäßige Backups**:
    ```bash
    # Beispiel Backup-Script
    #!/bin/bash
    DATE=$(date +%Y%m%d_%H%M%S)
-   mysqldump -u clearwiki -p clearwiki > backup_$DATE.sql
-   tar -czf backup_$DATE.tar.gz . --exclude=backup_*.tar.gz
+   tar -czf backup_$DATE.tar.gz data/ public/uploads/ --exclude=backup_*.tar.gz
    ```
+
+   **Wichtig**: Sichern Sie regelmäßig das `data/` Verzeichnis - hier sind alle Ihre Inhalte gespeichert!
 
 ## 📂 Verzeichnisstruktur
 
 ```
 clearwiki/
-├── config.php              # Datenbank-Konfiguration
-├── functions.php           # Zentrale Funktionen
-├── schema.sql              # Datenbank-Schema
-├── generate_hash.php       # Passwort-Hash-Generator
-├── migrate_lang_strings.php # Migrations-Tool für Sprachen
+├── config.php              # System-Konfiguration (Dateipfade)
+├── functions.php           # Zentrale Funktionen (file-based)
 ├── .htaccess               # Root .htaccess (Sicherheit)
+├── data/                   # 🔥 ALLE DATEN HIER (JSON & PHP)
+│   ├── users/
+│   │   └── users.json      # Benutzer-Daten
+│   ├── articles/
+│   │   └── articles.json   # Wiki-Artikel
+│   ├── settings/
+│   │   ├── global.json     # Globale Einstellungen
+│   │   └── footer_links.json
+│   └── languages/
+│       ├── supported.json  # Verfügbare Sprachen
+│       ├── de.php          # Deutsche Übersetzungen
+│       ├── en.php          # Englische Übersetzungen
+│       └── fr.php          # Französische Übersetzungen
 ├── public/                 # Öffentliches Verzeichnis (DocumentRoot)
 │   ├── index.php           # Front-Controller
 │   ├── .htaccess           # URL Rewriting
-│   ├── debug_session.php   # Session-Debug (nur für Entwicklung!)
 │   └── uploads/
 │       └── images/         # Hochgeladene Bilder
-├── views/                  # View-Templates
-│   ├── header.php
-│   ├── footer.php
-│   ├── home.php
-│   ├── article_*.php
-│   ├── admin_*.php
-│   └── ...
-└── lang/                   # Veraltete Sprachdateien (optional)
+└── views/                  # View-Templates
+    ├── header.php
+    ├── footer.php
+    ├── home.php
+    ├── article_*.php
+    ├── admin_*.php
+    └── ...
 ```
 
 ## 🎨 Anpassung
@@ -196,12 +172,12 @@ clearwiki/
 
 ### Footer-Links
 
-Footer-Links werden in der Datenbank in der Tabelle `footer_links` gespeichert.
+Footer-Links werden in `data/settings/footer_links.json` gespeichert und können im Admin-Panel verwaltet werden.
 
 ### Sprachen
 
 - Neue Sprachen können im Admin-Panel unter **Sprachverwaltung** hinzugefügt werden
-- Sprachstrings werden automatisch für neue Sprachen initialisiert
+- Sprachstrings werden in PHP-Dateien gespeichert: `data/languages/{lang_code}.php`
 
 ## 🐛 Fehlerbehebung
 
@@ -214,12 +190,13 @@ sudo a2enmod rewrite
 sudo systemctl restart apache2
 ```
 
-### Problem: Datenbank-Verbindungsfehler
+### Problem: Daten werden nicht gespeichert
 
-**Lösung**: Überprüfen Sie die Zugangsdaten in `config.php` und stellen Sie sicher, dass MySQL läuft.
+**Lösung**: Überprüfen Sie die Schreibrechte für das `data/` Verzeichnis.
 
 ```bash
-sudo systemctl status mysql
+chmod -R 775 data/
+chown -R www-data:www-data data/
 ```
 
 ### Problem: Bilder können nicht hochgeladen werden
@@ -252,19 +229,16 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ```
 
-### Passwort-Hash generieren
+### Daten-Struktur
 
-```bash
-php generate_hash.php
-```
+Alle Daten liegen in JSON-Dateien im `data/` Verzeichnis:
 
-### Sprach-Migration
+- **Benutzer**: `data/users/users.json`
+- **Artikel**: `data/articles/articles.json`
+- **Einstellungen**: `data/settings/global.json`
+- **Sprachen**: `data/languages/{lang_code}.php`
 
-Falls Sie alte Sprachdateien haben:
-
-```bash
-php migrate_lang_strings.php
-```
+Sie können diese Dateien direkt bearbeiten (z.B. für Bulk-Änderungen) oder über das Admin-Panel verwalten.
 
 ## 🤝 Beitragen
 
