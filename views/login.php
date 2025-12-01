@@ -49,13 +49,16 @@ $errors = $errors ?? []; // Initialisiere $errors, falls nicht gesetzt
                 </div>
             </div>
 
+            <!-- Forgot password feature not yet implemented -->
+            <?php if (false): // Disabled until password reset is implemented ?>
             <div class="flex items-center justify-between">
                 <div class="text-sm">
-                    <a href="#" class="font-medium text-accent-blue hover:text-blue-400">
+                    <a href="/<?= htmlspecialchars($current_lang) ?>/forgot-password" class="font-medium text-accent-blue hover:text-blue-400">
                         <?= __('forgot_password_link') ?>
                     </a>
                 </div>
             </div>
+            <?php endif; ?>
 
             <div>
                 <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-accent-orange hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-orange">

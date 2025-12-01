@@ -413,9 +413,6 @@ $footer_links = get_footer_links();
                         </div>
                     `).join('')}
                 </div>
-                <div class="border-t border-gray-600 mt-4 pt-3 text-center">
-                    <a href="#" class="text-orange-500 text-sm hover:text-orange-400">Alle Ergebnisse anzeigen →</a>
-                </div>
             `;
             
             const searchContainer = document.querySelector('.search-container');

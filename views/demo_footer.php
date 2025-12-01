@@ -16,17 +16,6 @@ $footer_links = get_footer_links();
                 <div>
                     <h4 class="font-semibold text-white mb-4"><?= sanitize_output($_SETTINGS['wiki_name'] ?? 'ClearWiki') ?></h4>
                     <p class="text-gray-400 text-sm mb-4"><?= sanitize_output($_SETTINGS['wiki_slogan'] ?? __('default_footer_slogan')) ?></p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-orange-500">
-                            <i class="fab fa-discord"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-orange-500">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
                 </div>
                 <div>
                     <h4 class="font-semibold text-white mb-4"><?= __('footer_wiki_title') ?></h4>
@@ -528,9 +517,6 @@ $footer_links = get_footer_links();
                             <span class="text-xs text-gray-500">${result.type}</span>
                         </div>
                     `).join('')}
-                </div>
-                <div class="border-t border-gray-600 mt-4 pt-3 text-center">
-                    <a href="#" class="text-orange-500 text-sm hover:text-orange-400">Alle Ergebnisse anzeigen →</a>
                 </div>
             `;
             
