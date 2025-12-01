@@ -41,6 +41,7 @@ Thumbs.db
 *.backup
 *.sql.backup
 backup_*
+functions_old_database.php
 
 # Composer (if used in future)
 vendor/
